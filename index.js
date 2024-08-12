@@ -13,17 +13,6 @@ if(localStorage.getItem('battledome-helper') == 'true'){
     battledomeToggleSrc = onIconSrc
 }
 
-let itemSelect = (slotNum, item) => {
-    $(`#p1e${slotNum}m`).click()
-    let itemArr = $('.fsmid li')
-    for(var i = 0; i < itemArr.length; i++) {
-        if($(itemArr[i].children[0]).attr('title') == item){
-            $(itemArr[i].children[0]).click()
-            return $(`#p1e${slotNum}m`).hasClass('selected')
-        }
-    }
-}
-
 let abilitySelect = (ability) => {
     $('#p1am').click()
     let abilityArr = $('.ability').parent()
@@ -52,21 +41,57 @@ $(document).ready(function() {
         user-select: none;
         `)
     helperDiv.attr('id', 'neopetsHelper')
-    
-    let switchDiv = $('<div>').attr('style', `
-        
-        `)
     let bdSwitchVal = 'off'
-    console.log(localStorage.getItem('battledome-helper'))
     if(localStorage.getItem('battledome-helper') == 'true'){
         bdSwitchVal = 'on'
     }
-    switchDiv.html(`
+    let switchDiv = $('<div>').html(`
+        <div>
+          links:
+            <div style="padding:3px;">
+                <div style="padding:3px;  cursor:pointer;" onClick="toggleSSW()">shop wizard</div>
+                <div style="padding:3px; cursor:pointer;"><a href="https://www.neopets.com/dome/barracks.phtml">barracks</a></div>
+                <div style="padding:3px;  cursor:pointer;"><a href="https://www.neopets.com/hospital/volunteer.phtml">hospital</a></div>
+                <div style="padding:3px;  cursor:pointer;" onClick="openDailiesTabs()">dailies</div>
+            </div>
+        </div>
         <div id="battledomeHelperSwitch" value="${bdSwitchVal}">
         <div style="position:relative; float:left;">battledome helper</div><div><img id="battledomeToggle" style="width:28px; position:relative; float:right; cursor:pointer;" src="${battledomeToggleSrc}"></div>
         </div>
+        <script>
+            let toggleSSW = () => {
+                if(typeof toggleSSW__2020 != 'undefined'){
+                    toggleSSW__2020()
+                }
+                // if(toggleSSW__2020() != undefined){
+                //     toggleSSW__2020()
+                // }
+                $('.sswdrop').removeClass('panel_hidden')
+                $('.sswdrop').addClass('panel_shown')
+                $('.sswdrop').attr('style', 'bottom:20px;')
+                $('#ssw-criteria').val('exact')
+                $('#searchstr').focus()
+            }
+            let openDailiesTabs = () => {
+                window.open('https://www.neopets.com/bank.phtml', '_blank')
+                window.open('https://www.neopets.com/desert/shrine.phtml', '_blank')
+                window.open('https://www.neopets.com/pirates/forgottenshore.phtml', '_blank')
+                window.open('https://www.neopets.com/desert/fruit/index.phtml', '_blank')
+                window.open('https://www.neopets.com/jelly/jelly.phtml', '_blank')
+                window.open('https://www.neopets.com/prehistoric/omelette.phtml', '_blank')
+                window.open('https://www.neopets.com/shenkuu/neggcave/', '_blank')
+                window.open('https://www.neopets.com/faerieland/tdmbgpop.phtml', '_blank')
+                window.open('https://www.neopets.com/island/tombola.phtml', '_blank')    
+            }
+        </script>
         `)
     helperDiv.append(switchDiv)
+    // let linksDiv = $('<div>').html(`
+    //     <div style="position:absolute; margin-top:28px;">
+    //         links:
+    //     </div>
+    //     `)
+    // helperDiv.append(linksDiv)
     $('body').prepend(helperDiv)
 
     $('#arenacontainer').attr('style', 'margin-top: 60px;')
@@ -86,12 +111,21 @@ $(document).ready(function() {
         }
     })
 
-    $('#start').click()
-
     let attackCheck = setInterval(function() {
+
         if($('#statusmsg').text() == 'Plan your next move...'){
             if(localStorage.getItem('battledome-helper') == 'true'){
-                console.log('get em')
+                let itemSelect = (slotNum, item) => {
+                    $(`#p1e${slotNum}m`).click()
+                    let itemArr = $('.fsmid li')
+                    for(var i = 0; i < itemArr.length; i++) {
+                        if($(itemArr[i].children[0]).attr('title') == item){
+                            $(itemArr[i].children[0]).click()
+                            $(`#p1e${slotNum}m`).addClass('selected')
+                            return $(`#p1e${slotNum}m`).hasClass('selected')
+                        }
+                    }
+                }
                 $('#skipreplay').click()
                 itemSelect(1, 'Varia is the Bomb')
                 itemSelect(2, 'Thunder Sticks')
@@ -101,17 +135,3 @@ $(document).ready(function() {
         }
     }, 100)
 })
-
-let attack = () => {
-    
-    $('#skipreplay').click()
-    itemSelect(1, 'Varia is the Bomb')
-    itemSelect(2, 'Thunder Sticks')
-    abilitySelect('Lens Flare')
-    setTimeout(() => {
-        // $('#fight').click()
-        setInterval(() => {
-            // $('#skipreplay').click()
-        }, 1000)
-    }, 500)
-}
