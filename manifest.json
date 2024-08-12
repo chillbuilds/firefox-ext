@@ -1,0 +1,19 @@
+{
+    "manifest_version": 2,
+    "name": "firefox-ext",
+    "version": "1.0",
+  
+    "description": "neopets helper",
+  
+    "icons": {
+      "96": "icons/ext-icon.png"
+    },
+  
+    "content_scripts": [
+      {
+        "matches": ["*://*.neopets.com/*"],
+        "js": ["jquery.js", "index.js"]
+      }
+    ]
+  }
+  
